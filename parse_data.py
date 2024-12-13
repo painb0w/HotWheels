@@ -66,7 +66,6 @@ def get_weather_archive():
             time.sleep(50)
             print("Файл загружен!")
             break  # Убираем break, если нужно обработать все ссылки
-
     except Exception as e:
         print(f"Произошла ошибка: {e}")
 
