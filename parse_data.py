@@ -1,17 +1,21 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 import time
 
-# Настройка опций Chrome
-chrome_options = Options()
-chrome_options.add_experimental_option("detach", True)
 
 # Функция для парсинга и выполнения действий
-def get_weather_archive():
+def get_weather_archive(download_folder):
+
+    # Настройка опций Chrome
+    chrome_options = Options()
+    chrome_options.add_experimental_option("detach", True)
+
+    # Настройка директории для скачивания
+    chrome_options.add_argument(f"--download-default-directory={download_folder}")
+
     # Запускаем драйвер
     driver = webdriver.Chrome(options=chrome_options)
     driver.maximize_window()
@@ -66,6 +70,7 @@ def get_weather_archive():
             time.sleep(50)
             print("Файл загружен!")
             break  # Убираем break, если нужно обработать все ссылки
+
     except Exception as e:
         print(f"Произошла ошибка: {e}")
 
@@ -73,5 +78,3 @@ def get_weather_archive():
         # Закрываем драйвер
         driver.quit()
 
-# Запуск функции
-get_weather_archive()
