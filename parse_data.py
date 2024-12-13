@@ -67,7 +67,7 @@ def get_weather_archive(download_folder):
                 EC.element_to_be_clickable((By.XPATH, "//a[contains(@href, 'download/files.synop')]"))
             )
             download_button.click()
-            time.sleep(50)
+            time.sleep(10)
             print("Файл загружен!")
             break  # Убираем break, если нужно обработать все ссылки
 
