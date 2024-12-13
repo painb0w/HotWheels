@@ -19,6 +19,5 @@ def getItemDivs(url):
     print(driver.title)
     driver.quit()
     
-
 # Пример использования
 getItemDivs('https://www.yahoo.com')
