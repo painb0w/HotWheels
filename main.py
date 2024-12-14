@@ -5,8 +5,8 @@ import preprocess_data
 import pandas as pd
 import model
 
-# parse_data.get_weather_archive(config.source_folder)
-# unzip.extract_gz_files(config.source_folder, config.destination_folder)
+# parse_data.get_weather_archive(config.source_folder_Artyom)
+# unzip.extract_gz_files(config.source_folder_Artyom, config.destination_folder_Artyom)
 
 df_weather = preprocess_data.get_weather_all(config.destination_folder) 
 df_fires = preprocess_data.get_fires_all(config.fires_path)
