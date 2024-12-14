@@ -6,7 +6,7 @@ def get_weather_all(directory): #указать в качестве параме
     df_weather_list = []
 
     for filename in os.listdir(directory):
-        if filename.endswith('.xlsx') or filename.endswith('.xls'):  
+        if filename.endswith('.xlsx') or filename.endswith('.xls'):
             file_path = os.path.join(directory, filename)
             town = pd.read_excel(file_path)
             town=town.columns[0].split()[2].replace(',', '')            
@@ -21,9 +21,7 @@ def get_weather_all(directory): #указать в качестве параме
             df_weather.Cl = df_weather.Cl.fillna('Слоисто-кучевых, слоистых, кучевых или кучево-дождевых облаков нет.')
             df_weather.Nh = df_weather.Nh.fillna('Осадков нет.')
             df_weather.N = df_weather.N.fillna('Облаков нет.')
-
             df_weather_list.append(df_weather)
-
     final_df = pd.concat(df_weather_list, ignore_index=True)
     return final_df
 
@@ -32,12 +30,10 @@ def get_fires_all(fires_path): # указать в качестве параме
     return df
 
 def merge_fires_weather(fires_df, weather_df, destination_file_result):
-    """
-    Метод для получения итогового датасета, на котором будет обучаться модель
+    # Метод для получения итогового датасета, на котором будет обучаться модель
+    # fires_df, weather_df - датасеты пожаров и погоды соответственно
+    # destination_file_result - сюда сохранится обработанная объединенная выборка, готовая к обучению на ней модели 
 
-    fires_df, weather_df - датасеты пожаров и погоды соответственно
-    destination_file_result - сюда сохранится обработанная объединенная выборка, готовая к обучению на ней модели 
-    """
     weather_df['Местное время'] = pd.to_datetime(weather_df['Местное время'])
     fires_df['dt'] = pd.to_datetime(fires_df['dt'])
     result = pd.merge(fires_df, weather_df, right_on=['Местное время', 'Населенный пункт'], left_on=['dt', 'Только населенный пункт'], how='left')
