@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import os
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import MinMaxScaler
 
 def get_weather_all(directory): #указать в качестве параметра папку с выборками погоды
     df_weather_list = []
@@ -46,6 +48,38 @@ def merge_fires_weather(fires_df, weather_df, destination_file_result):
        'T', 'P', 'U', 'DD', 'Ff', 'N', 'WW', 'Cl', 'Cm', 'Nh']]
     result.to_csv(destination_file_result, index=False) # Сохраняем датасет в файл csv 
     return result
+
+def prepare_for_clasterization(df): 
+
+    scaler = MinMaxScaler() 
+
+    encoder1 = LabelEncoder()
+    encoder2 = LabelEncoder()
+    encoder3 = LabelEncoder()
+    encoder4 = LabelEncoder()
+    encoder5 = LabelEncoder()
+    encoder6 = LabelEncoder()
+    encoder7 = LabelEncoder()
+
+    result = df.copy()
+
+    result[['T','P','U', 'Ff']] = scaler.fit_transform(result[['T','P','U', 'Ff']])
+
+    result['year'] = result['Местное время'].dt.year
+    result['month'] = result['Местное время'].dt.month
+    result = result.drop(columns={'Местное время'})
+
+    result['Населенный пункт'] = encoder1.fit_transform(result['Населенный пункт'])
+    result['DD'] = encoder2.fit_transform(result['DD'])
+    result['N'] = encoder3.fit_transform(result['N'])
+    result['WW'] = encoder4.fit_transform(result['WW'])
+    result['Cl'] = encoder5.fit_transform(result['Cl'])
+    result['Cm'] = encoder6.fit_transform(result['Cm'])
+    result['Nh'] = encoder7.fit_transform(result['Nh'])
+    
+    interpratations = [encoder1.classes_, encoder2.classes_, encoder3.classes_, encoder4.classes_, encoder5.classes_, encoder6.classes_, encoder7.classes_]
+
+    return result, interpratations
 
 # def get_final_df(destination_file_result): # считывает в датафрейм итоговый датасет и возвращает его
 #     final_df = pd.read_csv(destination_file_result)
