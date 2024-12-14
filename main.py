@@ -1,8 +1,14 @@
 import parse_data
 import unzip
+import config
+import preprocess_data
+import pandas as pd
 
-source_folder = "C:/University/5 semester/ml projects/final project/Выборки"  # Сюда парсер скачивает выборки
-destination_folder = "C:/Users/Pavel/Documents/GitHub/HotWheels/Выборки"  # Сюда парсер распаковывает архивы из source_folder
+# parse_data.get_weather_archive(config.source_folder)
+# unzip.extract_gz_files(config.source_folder, config.destination_folder)
 
-parse_data.get_weather_archive(source_folder)
-unzip.extract_gz_files(source_folder, destination_folder)
+df_weather = preprocess_data.get_weather_all('C:/Users/Pavel/Documents/GitHub/HotWheels/Выборки/временная') 
+df_fires = preprocess_data.get_fires_all(config.fires_path)
+df = preprocess_data.merge_fires_weather(df_fires, df_weather, config.destination_file_result)
+
+print(df.info())
